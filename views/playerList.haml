@@ -1,3 +1,6 @@
+- if @game.playerIds.length >= @game.minPlayers
+  %p{:class => "game-on"}Game is on!
+%p Players in the game:
 - if !@players.any?
   %strong No players so far!
 - else

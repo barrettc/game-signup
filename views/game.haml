@@ -2,7 +2,6 @@
   %div{:id => "flash-message"}
     =styled_flash
   %h3 Game: #{@game.date.localtime.strftime("%A, %B %e, %Y, %l:%M %p")}
-  %p Players in the game:
   %div{:id => "playerList"}
     = haml :playerList
   %div{:id => "waitingList"}
