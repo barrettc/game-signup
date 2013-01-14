@@ -230,6 +230,8 @@ get "/game/:id" do
     @game = Game.find("#{params[:id]}")
     host = User.where(:id => @game.host).first
     @hostName = [host.firstName, host.lastName].compact.join(' ')
+    @encodedAddr = ERB::Util.url_encode(@game.address.address)
+    puts @encodedAddr
 
     get_player_list(@game)
     get_waiting_list(@game)

@@ -55,7 +55,7 @@
       title: "#{@game.address.address}"
     });
 
-    var contentStr = "<strong>Host: #{@hostName}</strong><br>#{@game.address.street}<br>#{@game.address.city}, #{@game.address.state} #{@game.address.zipCode}";
+    var contentStr = "<strong>Host: #{@hostName}</strong><br><a href='http://maps.apple.com/?q=#{@encodedAddr}'>#{@game.address.street}<br>#{@game.address.city}, #{@game.address.state} #{@game.address.zipCode}</a>";
 
     var infowindow = new google.maps.InfoWindow({
       content: contentStr
