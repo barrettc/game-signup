@@ -1,12 +1,23 @@
 - if @game.playerIds.length >= @game.minPlayers
   %p{:class => "game-on"}Game is on!
-%p Players in the game:
+%p Lineup:
 - if !@players.any?
   %strong No players so far!
 - else
-  %ol
+  %table{:class => "table table-striped"}
+    %thead
+      %tr
+        %th
+          \#
+        %th
+          Player
+    - cnt = 0
     - @players.each do |player, signupTime|
-      %li<
-        #{player.firstName} #{player.lastName}
-        %small
-          %i (#{signupTime.localtime.strftime("%b %e %Y, %l:%M.%S %p")})
+      %tr
+        %td
+          - cnt += 1
+          #{cnt}
+        %td<
+          #{player.firstName} #{player.lastName}
+          %small
+            %i (#{signupTime.localtime.strftime("%b %e %Y, %l:%M.%S %p")})

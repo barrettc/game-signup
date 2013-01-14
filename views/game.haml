@@ -2,16 +2,18 @@
   %div{:id => "flash-message"}
     =styled_flash
   %h3 Game: #{@game.date.localtime.strftime("%A, %B %e, %Y, %l:%M %p")}
+  %div{:id => "gameButtons"}
+    = haml :gameButtons
+  %br
   %div{:id => "playerList"}
     = haml :playerList
   %div{:id => "waitingList"}
     = haml :waitingList
   %br
   %h3 Map
+  %p
+    %a{:href => "http://maps.apple.com/?q=#{@encodedAddr}"}#{@game.address.street}, #{@game.address.city}, #{@game.address.state} #{@game.address.zipCode}
   %div{:id => "map_canvas", :class => "map"}
-  %br
-  %div{:id => "gameButtons"}
-    = haml :gameButtons
 :javascript
   $('#signup').live('click', function () {
       var signup = $.ajax({
