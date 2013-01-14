@@ -7,11 +7,11 @@
   %div{:id => "waitingList"}
     = haml :waitingList
   %br
-  %div{:id => "gameButtons"}
-    = haml :gameButtons
-  %br
   %h3 Map
   %div{:id => "map_canvas", :class => "map"}
+  %br
+  %div{:id => "gameButtons"}
+    = haml :gameButtons
 :javascript
   $('#signup').live('click', function () {
       var signup = $.ajax({
