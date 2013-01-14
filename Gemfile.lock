@@ -8,6 +8,7 @@ GEM
       i18n (~> 0.6)
       multi_json (~> 1.0)
     builder (3.0.4)
+    geocoder (1.1.6)
     haml (3.1.7)
     i18n (0.6.1)
     mongoid (3.0.15)
@@ -36,6 +37,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  geocoder
   haml
   mongoid
   newrelic_rpm

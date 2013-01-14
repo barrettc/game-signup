@@ -3,6 +3,7 @@ require 'sinatra/flash'
 require "sinatra/reloader" if development?
 require 'mongoid'
 require 'haml'
+require 'geocoder'
 configure :production do
   require 'newrelic_rpm'
 end
@@ -29,6 +30,29 @@ class Game
   field :minPlayers, type: Integer
   field :playerIds, type: Hash, default: Hash.new
   field :waitingListIds, type: Hash, default: Hash.new
+  field :host, type: String
+  embeds_one :address
+end
+
+class Address
+  include Mongoid::Document
+
+  field :street, type: String
+  field :city, type: String
+  field :state, type: String
+  field :zipCode, type: String
+  
+  field :coordinates, type: Array
+  field :address, type: String
+  include Geocoder::Model::Mongoid
+  geocoded_by :address
+  after_validation :geocode
+  
+  embedded_in :game
+
+  def address
+    [street, city, state, zipCode].compact.join(', ')
+  end
 end
 
 #######################################################
@@ -204,6 +228,8 @@ get "/game/:id" do
   if logged_in?
     @user = User.where(:id => session[:user]).first
     @game = Game.find("#{params[:id]}")
+    host = User.where(:id => @game.host).first
+    @hostName = [host.firstName, host.lastName].compact.join(' ')
 
     get_player_list(@game)
     get_waiting_list(@game)
@@ -316,11 +342,20 @@ end
 
 post "/game" do
   if logged_in?
+    host = User.where(:email => params[:hostEmail].downcase).first
     game = Game.create({
       :date => Time.parse(params[:gameTime]),
       :maxPlayers => params[:maxPlayers],
-      :minPlayers => params[:minPlayers]
+      :minPlayers => params[:minPlayers],
+      :playerIds => {host.id => Time.now}, # add the host to the game
+      :host => host.id
     })
+
+    game.address = Address.new
+    game.address.street = params[:street]
+    game.address.city = params[:city]
+    game.address.state = params[:state]
+    game.address.zipCode = params[:zipCode]
 
     game.save
     redirect "/"

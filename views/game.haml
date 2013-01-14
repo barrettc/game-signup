@@ -9,6 +9,9 @@
   %br
   %div{:id => "gameButtons"}
     = haml :gameButtons
+  %br
+  %h3 Map
+  %div{:id => "map_canvas", :class => "map"}
 :javascript
   $('#signup').live('click', function () {
       var signup = $.ajax({
@@ -35,3 +38,39 @@
           $('#gameButtons').load('/game/#{params[:id]}/gameButtons');
       })
   });
+
+  function initialize() {
+    var latlng = new google.maps.LatLng(#{@game.address.coordinates[1]},#{@game.address.coordinates[0]});
+
+    var mapOptions = {
+      zoom: 13,
+      center: latlng,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+    var marker = new google.maps.Marker({
+      position: latlng,
+      map: map,
+      title: "#{@game.address.address}"
+    });
+
+    var contentStr = "<strong>Host: #{@hostName}</strong><br>#{@game.address.street}<br>#{@game.address.city}, #{@game.address.state} #{@game.address.zipCode}";
+
+    var infowindow = new google.maps.InfoWindow({
+      content: contentStr
+    });
+
+    google.maps.event.addListener(marker, 'click', function() {
+      infowindow.open(map,marker);
+    });
+  }
+
+  function loadScript() {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "http://maps.googleapis.com/maps/api/js?&sensor=true&callback=initialize";
+    document.body.appendChild(script);
+  }
+
+  window.onload = loadScript;
