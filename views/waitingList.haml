@@ -7,13 +7,15 @@
           \#
         %th
           Player
+        %th
+          Signup Time
     - cnt = 0
     - @waitingListPlayers.each do |player, signupTime|
       %tr
         %td
           - cnt += 1
           #{cnt}
-        %td<
+        %td
           #{player.firstName} #{player.lastName}
-          %small
-            %i (#{signupTime.localtime.strftime("%b %e %Y, %l:%M.%S %p")})
+        %td
+          #{signupTime.localtime.strftime("%b %e, %l:%M %p")}
