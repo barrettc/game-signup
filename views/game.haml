@@ -14,6 +14,8 @@
   %p
     %a{:href => "http://maps.apple.com/?q=#{@encodedAddr}"}#{@game.address.street}, #{@game.address.city}, #{@game.address.state} #{@game.address.zipCode}
   %div{:id => "map_canvas", :class => "map"}
+  %br
+  %div{:id => "disqus_thread"}
 :javascript
   $('#signup').live('click', function () {
       var signup = $.ajax({
@@ -40,6 +42,14 @@
           $('#gameButtons').load('/game/#{params[:id]}/gameButtons');
       })
   });
+
+  var disqus_shortname = 'pokersignup'; // required: replace example with your forum shortname
+
+  (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
 
   function initialize() {
     var latlng = new google.maps.LatLng(#{@game.address.coordinates[1]},#{@game.address.coordinates[0]});
