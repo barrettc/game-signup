@@ -20,6 +20,7 @@ class User
 
   validates_length_of :firstName, minimum: 2
   validates_length_of :lastName,  minimum: 2
+  index({ email: 1 })
 end
 
 class Game
@@ -32,6 +33,7 @@ class Game
   field :waitingListIds, type: Hash, default: Hash.new
   field :host, type: String
   embeds_one :address
+  index({ date: 1 })
 end
 
 class Address
